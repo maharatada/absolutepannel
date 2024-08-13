@@ -22,7 +22,7 @@
       }
       .panel-header {
         background-color: #f5f5f5;
-        padding: 17px;
+        padding: 10px 6px;
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -63,10 +63,9 @@
       .sidebar {
         width: 55px;
         float: left;
-        height: 150px;
         box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
         position: absolute;
-        border-radius: 10px;
+        height: 98vh;
         top: 0%;
         bottom: 0%;
         right: 0%;
@@ -81,10 +80,11 @@
       .sidebar img {
         width: 40px;
         height: 42px;
+        margin-left: 7px;
       }
 
       .panel {
-        width: 0;
+        width: 100%;
         position: relative;
         height: 100%;
         background-color: #fffefd;
@@ -96,13 +96,18 @@
 
       .panel .close-btn {
         position: absolute;
-        top: 8px;
+        top: 2px;
         right: 12px;
         z-index: 1024;
         font-size: 22px;
         color: black;
         cursor: pointer;
         display: none; /* Initially hidden */
+      }
+
+      .data {
+        opacity: 0;
+        transition: all 0.1s ease;
       }
     </style>
     <script>
@@ -184,33 +189,33 @@
       const closeBtn = document.querySelector(".close-btn");
       const graphImg = document.querySelector(".graph-img");
       const data = document.querySelector(".data");
-      let clicked = false;
+      let collapsed = true;
 
       sidebar.addEventListener("mouseenter", function () {
-        data.style.display = "flex";
-        sidebar.style.width = "380px";
-        sidebar.style.height = "98vh";
-        panel.style.width = "380px";
-        panel.style.height = "98vh";
-        panel.style.opacity = "1";
-        closeBtn.style.display = "block";
-        graphImg.style.display = "none";
-        clicked = false;
+        if (collapsed) {
+          setTimeout(function () {
+            data.style.opacity = 1;
+          }, 200);
+          sidebar.style.width = "30%";
+          panel.style.opacity = "1";
+          closeBtn.style.display = "block";
+          graphImg.style.display = "none";
+          collapsed = false;
+        }
       });
 
       sidebar.addEventListener(
         "mouseleave",
         function () {
-          panel.style.opacity = "0.4";
-          if (!clicked) {
+          if (!collapsed) {
+            panel.style.opacity = "0.4";
             setTimeout(function () {
-              panel.style.width = "0";
+              data.style.opacity = 0;
+            }, 900);
+            setTimeout(function () {
               sidebar.style.width = "55px";
               graphImg.style.display = "block";
-              sidebar.style.height = "150px";
-              panel.style.height = "150px";
-              data.style.display = "none";
-              clicked = false;
+              collapsed = true;
             }, 1000);
           }
         },
@@ -218,14 +223,13 @@
       );
 
       closeBtn.addEventListener("click", function () {
-        clicked = true;
-        panel.style.width = "0";
-        sidebar.style.width = "4%";
-        sidebar.style.height = "150px";
-        panel.style.height = "150px";
-        panel.style.opacity = "1";
-        graphImg.style.display = "block";
-        data.style.display = "none";
+        if (!collapsed) {
+          data.style.opacity = 0;
+          graphImg.style.display = "block";
+          collapsed = true;
+          sidebar.style.width = "4%";
+          panel.style.opacity = "1";
+        }
       });
     </script>
   </body>
