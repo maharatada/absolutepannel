@@ -192,14 +192,14 @@
       let collapsed = true;
 
       sidebar.addEventListener("mouseenter", function () {
+        sidebar.style.width = "30%";
+        panel.style.opacity = "1";
+        closeBtn.style.display = "block";
+        graphImg.style.display = "none";
         if (collapsed) {
           setTimeout(function () {
             data.style.opacity = 1;
           }, 200);
-          sidebar.style.width = "30%";
-          panel.style.opacity = "1";
-          closeBtn.style.display = "block";
-          graphImg.style.display = "none";
           collapsed = false;
         }
       });
